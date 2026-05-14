@@ -1,0 +1,86 @@
+public class EmployeeManagementSystem {
+
+    // MENU CONTROLLER
+    public static void menu(Integer choice){
+
+        switch on choice{
+
+            when 1{
+                addEmployee(101,'Anay','anay@gmail.com',Date.today(),'IT');
+            }
+
+            when 2{
+                viewEmployees();
+            }
+
+            when 3{
+                updateEmployee(101,'HR');
+            }
+
+            when 4{
+                deleteEmployee(101);
+            }
+
+            when else{
+                System.debug('Invalid Choice');
+            }
+        }
+    }
+
+    // ADD EMPLOYEE
+    public static void addEmployee(Integer id,String name,String email,Date birth,String dept){
+
+        Employee__c e = new Employee__c();
+
+        e.Emp_ID__c = id;
+        e.Emp_Name__c = name;
+        e.Email__c = email;
+        e.Birth_Date__c = birth;
+        e.Department__c = dept;
+
+        insert e;
+
+        System.debug('Employee Added');
+    }
+
+    // VIEW EMPLOYEES
+    public static void viewEmployees(){
+
+        List<Employee__c> empList =
+        [SELECT Emp_ID__c,Emp_Name__c,Email__c,Birth_Date__c,Department__c
+        FROM Employee__c];
+
+        for(Employee__c e : empList){
+
+            System.debug('ID:'+e.Emp_ID__c+
+            ' Name:'+e.Emp_Name__c+
+            ' Email:'+e.Email__c+
+            ' Birth:'+e.Birth_Date__c+
+            ' Dept:'+e.Department__c);
+        }
+    }
+
+    // UPDATE EMPLOYEE
+    public static void updateEmployee(Integer id,String dept){
+
+        Employee__c e =
+        [SELECT Id,Department__c FROM Employee__c WHERE Emp_ID__c=:id LIMIT 1];
+
+        e.Department__c = dept;
+
+        update e;
+
+        System.debug('Employee Updated');
+    }
+
+    // DELETE EMPLOYEE
+    public static void deleteEmployee(Integer id){
+
+        Employee__c e =
+        [SELECT Id FROM Employee__c WHERE Emp_ID__c=:id LIMIT 1];
+
+        delete e;
+
+        System.debug('Employee Deleted');
+    }
+}

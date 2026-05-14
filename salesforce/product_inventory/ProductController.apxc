@@ -1,0 +1,33 @@
+public class ProductController {
+
+    public Product_Inventory__c product {get; set;}
+    public List<Product_Inventory__c> productList {get; set;}
+
+    public ProductController(){
+        product = new Product_Inventory__c();
+        productList = [SELECT Id, Product_Name__c, Serial_No__c,
+                       Manufacture_Date__c, Expiry_Date__c
+                       FROM Product_Inventory__c];
+    }
+
+    // Insert Product
+    public void insertProduct(){
+        insert product;
+        product = new Product_Inventory__c();
+        productList = [SELECT Id, Product_Name__c, Serial_No__c,
+                       Manufacture_Date__c, Expiry_Date__c
+                       FROM Product_Inventory__c];
+    }
+
+    // Delete Product
+    public void deleteProduct(){
+
+        String pid = ApexPages.currentPage().getParameters().get('pid');
+
+        delete [SELECT Id FROM Product_Inventory__c WHERE Id = :pid];
+
+        productList = [SELECT Id, Product_Name__c, Serial_No__c,
+                       Manufacture_Date__c, Expiry_Date__c
+                       FROM Product_Inventory__c];
+    }
+}

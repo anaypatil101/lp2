@@ -1,0 +1,63 @@
+public class BankAccountSystem {
+
+    // CREATE
+    public static void addCustomer(Integer id, String name, String email, Date birth, String dept){
+
+        BankAccount__c c = new BankAccount__c();
+
+        c.Emp_ID__c = id;
+        c.Emp_Name__c = name;
+        c.Email__c = email;
+        c.Birth_Date__c = birth;
+        c.Department__c = dept;
+
+        insert c;
+
+        System.debug('Customer Added');
+    }
+
+    // READ
+    public static void viewCustomers(){
+
+        List<BankAccount__c> listCust = [SELECT Emp_ID__c, Emp_Name__c, Email__c, Birth_Date__c, Department__c
+                                         FROM BankAccount__c];
+
+        for(BankAccount__c c : listCust){
+
+            System.debug('ID: '+c.Emp_ID__c+
+                         ' Name: '+c.Emp_Name__c+
+                         ' Email: '+c.Email__c+
+                         ' Birth: '+c.Birth_Date__c+
+                         ' Dept: '+c.Department__c);
+        }
+    }
+
+    // UPDATE
+    public static void updateCustomer(Integer id, String newDept){
+
+        BankAccount__c c = [SELECT Id, Department__c
+                            FROM BankAccount__c
+                            WHERE Emp_ID__c = :id
+                            LIMIT 1];
+
+        c.Department__c = newDept;
+
+        update c;
+
+        System.debug('Customer Updated');
+    }
+
+    // DELETE
+    public static void deleteCustomer(Integer id){
+
+        BankAccount__c c = [SELECT Id
+                            FROM BankAccount__c
+                            WHERE Emp_ID__c = :id
+                            LIMIT 1];
+
+        delete c;
+
+        System.debug('Customer Deleted');
+    }
+
+}
